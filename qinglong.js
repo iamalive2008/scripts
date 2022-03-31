@@ -1,3 +1,5 @@
+const { cookie } = require('request');
+
 var LogDetails = true; //是否开启响应日志, true则开启
 
 var ScriptName = "青龙京东Cookie"
@@ -38,6 +40,33 @@ function GetEnvsByToken(tokenType, token) {
         Dump("error", error)
         Dump("response", response)
         Dump("data", data)
+
+        try {
+            if (error) {
+                throw new Error(error)
+            } else {
+                const cc = JSON.parse(data)
+                if (cc.code == 200) {
+                    cookieEnvs = []
+
+                    for (let item of cc.data) {
+                        if (item.name == "JD_COOKIE") {
+                            cookieEnvs.push(item)
+                        }
+                    }
+
+                    Dump("cookieEnvs", cookieEnvs)
+
+                } else {
+                    throw new Error(`青龙登录失败: ${data}`)
+                }
+            }
+        }
+        catch (eor) {
+            $nobyda.AnError("青龙", "Token", eor, response, data)
+        } finally {
+            resolve()
+        }
     })
 }
 
