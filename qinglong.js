@@ -27,12 +27,15 @@ function Dump(name, object) {
 
 function GetEnvs() {
 
-    let serverAddr = "http://192.168.0.204:5700"
+    let openApiAddr = "http://192.168.0.204:5700"
     let clientId = ""
     let clientSecret = ""
 
-
-    let tokenUrl = serverAddr + ApiAuthToken
+    let tokenUrl = {
+        url: `${openApiAddr}${ApiAuthToken}?client_id=${clientId}&client_secret=${clientSecret}`,
+        headers: {
+        }
+    };
     $nobyda.get(tokenUrl, async function(error, response, data) {
         Dump("error", error)
         Dump("response", response)
