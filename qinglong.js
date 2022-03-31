@@ -14,13 +14,6 @@ var $nobyda = nobyda();
     $nobyda.done()
 })
 
-
-
-
-var ApiAuthToken = "/open/auth/token"
-
-
-
 function Dump(name, object) {
     console.log(name + ": "+ JSON.stringify(object) || object)
 }
@@ -32,7 +25,7 @@ function GetEnvs() {
     let clientSecret = ""
 
     let tokenUrl = {
-        url: `${serverAddr}${ApiAuthToken}?client_id=${clientId}&client_secret=${clientSecret}`,
+        url: `${serverAddr}/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
         headers: {
         }
     };
