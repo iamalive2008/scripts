@@ -16,8 +16,26 @@ var $nobyda = nobyda();
 
 
 
-// function CookieUpdate(oldValue, newValue, path = 'cookie') {
-//     let item, type, name = (oldValue || newValue || '').split(/pt_pin=(.+?);/)[1];
+
+var ApiAuthToken = "/auth/token"
+
+function GetEnvs() {
+
+    let serverAddr = "http://192.168.0.204:5700"
+    let clientId = ""
+    let clientSecret = ""
+
+
+    let tokenUrl = serverAddr + ApiAuthToken
+    $nobyda.get(tokenUrl, async function(error, response, data) {
+        console.log(error, response, data)
+    })
+}
+
+
+
+function CookieUpdate(oldValue, newValue, path = 'cookie') {
+    let item, type, name = (oldValue || newValue || '').split(/pt_pin=(.+?);/)[1];
 //     let total = $nobyda.read('CookiesJD');
 //     try {
 //       total = checkFormat(JSON.parse(total || '[]'));
@@ -49,7 +67,7 @@ var $nobyda = nobyda();
 //       item,
 //       name: decodeURIComponent(name)
 //     };
-//   }
+  }
 
 function GetCookie() {
     const req = $request;
@@ -58,7 +76,9 @@ function GetCookie() {
         const ckItems = CV.match(/(pt_key|pt_pin)=.+?;/g);
         if (/^https:\/\/(me-|)api(\.m|)\.jd\.com\/(client\.|user_new)/.test(req.url)) {
             if (ckItems && ckItems.length == 2) {
-                $nobyda.notify(ScriptName, "",  ckItems.join('')) 
+                // $nobyda.notify(ScriptName, "",  ckItems.join('')) 
+
+                CookieUpdate(null, ckItems.join(''))
 
                 // const value = CookieUpdate(null, ckItems.join(''))
                 // if (value.type !== -1) {
