@@ -36,6 +36,9 @@ function GetEnvs() {
 
 function CookieUpdate(oldValue, newValue, path = 'cookie') {
     let item, type, name = (oldValue || newValue || '').split(/pt_pin=(.+?);/)[1];
+
+    console.log("更新Cookie, 账号：", name)
+    GetEnvs()
 //     let total = $nobyda.read('CookiesJD');
 //     try {
 //       total = checkFormat(JSON.parse(total || '[]'));
