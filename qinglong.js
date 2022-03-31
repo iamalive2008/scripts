@@ -17,22 +17,22 @@ var $nobyda = nobyda();
 
 
 
-var ApiAuthToken = "/auth/token"
+var ApiAuthToken = "/open/auth/token"
 
 
 
 function Dump(name, object) {
-    console.log("\n" + name + ": "+ JSON.stringify(object) || object)
+    console.log(name + ": "+ JSON.stringify(object) || object)
 }
 
 function GetEnvs() {
 
-    let openApiAddr = "http://192.168.0.204:5700"
+    let serverAddr = "http://192.168.0.204:5700"
     let clientId = ""
     let clientSecret = ""
 
     let tokenUrl = {
-        url: `${openApiAddr}${ApiAuthToken}?client_id=${clientId}&client_secret=${clientSecret}`,
+        url: `${serverAddr}${ApiAuthToken}?client_id=${clientId}&client_secret=${clientSecret}`,
         headers: {
         }
     };
