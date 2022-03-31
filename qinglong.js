@@ -47,7 +47,7 @@ function GetEnvsByToken(tokenType, token) {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    cookieEnvs = []
+                    var cookieEnvs = []
 
                     for (let item of cc.data) {
                         if (item.name == "JD_COOKIE") {
