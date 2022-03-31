@@ -31,7 +31,10 @@ function GetCookieVal(key, cookies) {
 
 
 
-function UpdateNewCookie(pin, key, item) {
+function UpdateNewCookie(tokenType, token, pin, key, item) {
+
+    let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
+
     console.log(`更新 Cookies, pin=${pin}, key=${key}, id=${item.id}`)
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
@@ -42,7 +45,7 @@ function UpdateNewCookie(pin, key, item) {
             "id": item.id,
             "value": `pt_key=${key}; pt_pin=${pin}`,
             "name": "JD_COOKIE",
-            "remarks": item.remarks
+            "remarks": "Updated By qinglong.js"
         }
     };
 
@@ -50,12 +53,32 @@ function UpdateNewCookie(pin, key, item) {
         Dump("error", error)
         Dump("response", response)
 
+        try {
+            if (error) {
+                throw new Error(error)
+            } else {
+                const cc = JSON.parse(data)
+                if (cc.code == 200) {
+                    $nobyda.notify("青龙京东 Cookie", "更新 Cookie", `【账户${item.id}】${pin} 更新成功!`); 
+                }
+            }
+        } catch (eor) {
+            $nobyda.AnError("青龙", "Token", eor, response, data)
+        } finally {
+            resolve()
+        }
     })
 
 }
 
 
-function InsertNewCookie(pin, key) {
+function InsertNewCookie(tokenType, token, pin, key) {
+
+
+    let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
+    let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
+    let clientSecret = $nobyda.read("iamalive2008_qinglong_client_secret")
+
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
         headers: {
@@ -73,6 +96,21 @@ function InsertNewCookie(pin, key) {
     $nobyda.post(envsUrl, async function (error, response, data) {
         Dump("error", error)
         Dump("response", response)
+
+        try {
+            if (error) {
+                throw new Error(error)
+            } else {
+                const cc = JSON.parse(data)
+                if (cc.code == 200) {
+                    $nobyda.notify("青龙京东 Cookie", "新增 Cookie", `【账户${cc.data.id}】${pin} 创建成功!`); 
+                }
+            }
+        } catch (eor) {
+            $nobyda.AnError("青龙", "Token", eor, response, data)
+        } finally {
+            resolve()
+        }
 
     })
 
@@ -125,12 +163,12 @@ function UpsertEnvsByToken(tokenType, token, newCookie) {
                         let ptKey = GetCookieVal("pt_key", item.value)
                         console.log(`pin=${ptPin}; key=${ptKey}`)
                         if (ptPin == newPin) {
-                            UpdateNewCookie(newPin, newKey, item)
+                            UpdateNewCookie(tokenType, token,newPin, newKey, item)
                             break
                         }
                     }
 
-                    InsertNewCookie(newPin, newKey)
+                    InsertNewCookie(tokenType, token, newPin, newKey)
 
 
                 } else {
