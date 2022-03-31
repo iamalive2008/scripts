@@ -1,14 +1,15 @@
 var LogDetails = true; //是否开启响应日志, true则开启
 
+var ScriptName = "青龙京东Cookie" 
+
 var $nobyda = nobyda();
 
 
 (async function ReadCookie() {
     console.log("ReadCookie 脚本执行成功")
-    $nobyda.notify("青龙京东Cookie", "脚本执行成功") 
-    // GetCookie()
+    GetCookie()
 })().catch(e => {
-    $nobyda.notify("青龙京东Cookie", "", e.message || JSON.stringify(e))
+    $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
 }).finally(() => {
     $nobyda.done()
 })
@@ -57,13 +58,15 @@ function GetCookie() {
         const ckItems = CV.match(/(pt_key|pt_pin)=.+?;/g);
         if (/^https:\/\/(me-|)api(\.m|)\.jd\.com\/(client\.|user_new)/.test(req.url)) {
             if (ckItems && ckItems.length == 2) {
-                const value = CookieUpdate(null, ckItems.join(''))
-                if (value.type !== -1) {
-                    const write = $nobyda.write(JSON.stringify(value.total, null, 2), "CookiesJD")
-                    $nobyda.notify(`用户名: ${value.name}`, ``, `${value.type == 2 ? `更新` : `写入`}京东 [账号${value.item}] Cookie${write ? `成功 🎉` : `失败 ‼️`}`)
-                } else {
-                    console.log(`\n用户名: ${value.name}\n与历史京东 [账号${value.item}] Cookie相同, 跳过写入 ⚠️`)
-                }
+                $nobyda.notify(ScriptName, "",  ckItems.join('')) 
+
+                // const value = CookieUpdate(null, ckItems.join(''))
+                // if (value.type !== -1) {
+                //     const write = $nobyda.write(JSON.stringify(value.total, null, 2), "CookiesJD")
+                //     $nobyda.notify(`用户名: ${value.name}`, ``, `${value.type == 2 ? `更新` : `写入`}京东 [账号${value.item}] Cookie${write ? `成功 🎉` : `失败 ‼️`}`)
+                // } else {
+                //     console.log(`\n用户名: ${value.name}\n与历史京东 [账号${value.item}] Cookie相同, 跳过写入 ⚠️`)
+                // }
             } else {
                 throw new Error("写入Cookie失败, 关键值缺失\n可能原因: 非网页获取 ‼️");
             }
