@@ -5,28 +5,49 @@
     "icon": "https://avatars3.githubusercontent.com/u/29748519?s=460&u=392a19e85465abbcb1791c9b8b32184a16e6795e&v=4",
     "repo": "https://github.com/iamalive2008/scripts",
     "apps": [
-      {
-        "id": "qinglong_cookie",
-        "name": "青龙设置Cookie",
-        "keys": ["iamalive2008_qinglong_cookie"],
-        "settings": [
-          {
-            "id": "iamalive2008_qinglong_client_id",
-            "name": "Client ID",
-            "val": "",
-            "type": "textarea",
-            "placeholder": "请输入青龙应用Client ID",
-            "autoGrow": true,
-            "rows": 5,
-            "desc": "请先在青龙后台创建应用"
-          }
-        ],
-        "author": "@iamalive2008",
-        "repo": "https://github.com/iamalive2008/scripts/blob/main/qinglong.js",
-        "script": "https://raw.githubusercontent.com/iamalive2008/scripts/main/qinglong.js",
-        "icons": [
-          "https://z3.ax1x.com/2021/11/18/I7MpAe.png"
-        ]
-      }
+        {
+            "id": "qinglong_cookie",
+            "name": "青龙设置 Cookie",
+            "keys": [
+            ],
+            "settings": [
+                {
+                    "id": "iamalive2008_qinglong_server_addr",
+                    "name": "服务器地址",
+                    "val": "",
+                    "type": "textarea",
+                    "placeholder": "http://192.168.0.100:5700",
+                    "autoGrow": true,
+                    "rows": 5,
+                    "desc": "请输入青龙服务器地址"
+                },
+                {
+                    "id": "iamalive2008_qinglong_client_id",
+                    "name": "Client ID",
+                    "val": "",
+                    "type": "textarea",
+                    "placeholder": "请输入青龙应用Client ID",
+                    "autoGrow": true,
+                    "rows": 5,
+                    "desc": "请先在青龙后台创建应用"
+                },
+                {
+                    "id": "iamalive2008_qinglong_client_secret",
+                    "name": "Client Secret",
+                    "val": "",
+                    "type": "textarea",
+                    "placeholder": "请输入青龙应用Client Secret",
+                    "autoGrow": true,
+                    "rows": 5,
+                    "desc": "请先在青龙后台创建应用"
+                }
+            ],
+            "author": "@iamalive2008",
+            "repo": "https://github.com/iamalive2008/scripts/blob/main/qinglong.js",
+            "script": "https://raw.githubusercontent.com/iamalive2008/scripts/main/qinglong.js",
+            "icons": [
+                "https://z3.ax1x.com/2021/11/18/I7MpAe.png"
+            ]
+        }
     ]
-  }
+}
