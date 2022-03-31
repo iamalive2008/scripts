@@ -125,12 +125,12 @@ function UpsertEnvsByToken(tokenType, token, newCookie) {
                         let ptKey = GetCookieVal("pt_key", item.value)
                         console.log(`pin=${ptPin}; key=${ptKey}`)
                         if (ptPin == newPin) {
-                            UpdateNewCookie(pin, key, item)
+                            UpdateNewCookie(newPin, newKey, item)
                             break
                         }
                     }
 
-                    InsertNewCookie(pin, key)
+                    InsertNewCookie(newPin, newKey)
 
 
                 } else {
