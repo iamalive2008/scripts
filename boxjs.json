@@ -26,7 +26,7 @@
                     "name": "Client ID",
                     "val": "",
                     "type": "textarea",
-                    "placeholder": "请输入青龙应用Client ID",
+                    "placeholder": "请输入青龙应用 Client ID",
                     "autoGrow": true,
                     "rows": 5,
                     "desc": "请先在青龙后台创建应用"
@@ -36,7 +36,7 @@
                     "name": "Client Secret",
                     "val": "",
                     "type": "textarea",
-                    "placeholder": "请输入青龙应用Client Secret",
+                    "placeholder": "请输入青龙应用 Client Secret",
                     "autoGrow": true,
                     "rows": 5,
                     "desc": "请先在青龙后台创建应用"

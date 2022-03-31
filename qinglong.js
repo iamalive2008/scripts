@@ -20,9 +20,11 @@ function Dump(name, object) {
 
 function GetEnvs() {
 
-    let serverAddr = "http://192.168.0.204:5700"
-    let clientId = ""
-    let clientSecret = ""
+    let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
+    let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
+    let clientSecret = $nobyda.read("iamalive2008_qinglong_client_secret")
+
+    console.log(`Read prefs serverAddr=${serverAddr} clientId=${clientId} clientSecret=${clientSecret}`)
 
     let tokenUrl = {
         url: `${serverAddr}/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
