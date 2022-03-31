@@ -570,6 +570,7 @@ function nobyda() {
         read,
         get,
         post,
+        put,
         time,
         done
     }
