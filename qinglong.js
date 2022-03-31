@@ -34,23 +34,19 @@ function GetEnvs() {
 
     let tokenUrl = serverAddr + ApiAuthToken
     $nobyda.get(tokenUrl, async function(error, response, data) {
-        console.log("\n" + "error: "+ error)
-        console.log("\n" + "response: "+ response)
-
-        console.log("\n" + "response: "+ da)
- 
+        Dump("error", error)
+        Dump("response", response)
+        Dump("data", data)
     })
 }
 
 
 
 function CookieUpdate(oldValue, newValue) {
-    console.log("CookieUpdate", oldValue, newValue)
+    console.log("更新Cookie, "+ "Old:" + oldValue + ", New:" + newValue)
     let item, type, name = (oldValue || newValue || '').split(/pt_pin=(.+?);/)[1];
-    console.log(name)
-
-    console.log("更新Cookie, 账号：", name)
-    // GetEnvs()
+    console.log("更新Cookie, 账号：" + name)
+    GetEnvs()
 //     let total = $nobyda.read('CookiesJD');
 //     try {
 //       total = checkFormat(JSON.parse(total || '[]'));
