@@ -1,16 +1,15 @@
 
 
- console.log("脚本执行成功")
 
-// (async function ReadCookie() {
-//     console.log("脚本执行成功")
-//     $nobyda.notify("青龙京东Cookie", "脚本执行成功") 
-//     // GetCookie()
-// })().catch(e => {
-//     $nobyda.notify("青龙京东Cookie", "", e.message || JSON.stringify(e))
-// }).finally(() => {
-//     $nobyda.done()
-// })
+(async function ReadCookie() {
+    console.log("脚本执行成功")
+    $nobyda.notify("青龙京东Cookie", "脚本执行成功") 
+    // GetCookie()
+})().catch(e => {
+    $nobyda.notify("青龙京东Cookie", "", e.message || JSON.stringify(e))
+}).finally(() => {
+    $nobyda.done()
+})
 
 
 
