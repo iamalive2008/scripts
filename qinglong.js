@@ -1,4 +1,6 @@
+var LogDetails = true; //是否开启响应日志, true则开启
 
+var $nobyda = nobyda();
 
 
 (async function ReadCookie() {
