@@ -19,10 +19,6 @@ function Dump(name, object) {
 }
 
 
-function getCookie(name) {
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
-
 function GetCookieVal(key, cookies) {
 
     cookies = cookies.replace(/\s/g, '')
@@ -33,7 +29,56 @@ function GetCookieVal(key, cookies) {
     return ""
 }
 
-function GetEnvsByToken(tokenType, token) {
+
+
+function UpdateNewCookie(pin, key, item) {
+    console.log(`更新 Cookies, pin=${pin}, key=${key}, id=${item.id}`)
+    let envsUrl = {
+        url: `${serverAddr}/open/envs`,
+        headers: {
+            "Authorization": `${tokenType} ${token} `
+        },
+        body: {
+            "id": item.id,
+            "value": `pt_key=${key}; pt_pin=${pin}`,
+            "name": "JD_COOKIE",
+            "remarks": item.remarks
+        }
+    };
+
+    $nobyda.put(envsUrl, async function (error, response, data) {
+        Dump("error", error)
+        Dump("response", response)
+
+    })
+
+}
+
+
+function InsertNewCookie(pin, key) {
+    let envsUrl = {
+        url: `${serverAddr}/open/envs`,
+        headers: {
+            "Authorization": `${tokenType} ${token} `
+        },
+        body: [
+            {
+                "value": `pt_key=${key}; pt_pin=${pin}`,
+                "name": "JD_COOKIE",
+                "remarks": ""
+            }
+        ]
+    };
+
+    $nobyda.post(envsUrl, async function (error, response, data) {
+        Dump("error", error)
+        Dump("response", response)
+
+    })
+
+}
+
+function UpsertEnvsByToken(tokenType, token, newCookie) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
     let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
@@ -52,6 +97,8 @@ function GetEnvsByToken(tokenType, token) {
         Dump("error", error)
         Dump("response", response)
         // Dump("data", data)
+        let newPin = GetCookieVal("pt_pin", newCookie)
+        let newKey = GetCookieVal("pt_key", newCookie)
 
         try {
             if (error) {
@@ -67,7 +114,8 @@ function GetEnvsByToken(tokenType, token) {
                         }
                     }
 
-                   //  Dump("cookieEnvs", cookieEnvs)
+                    //  Dump("cookieEnvs", cookieEnvs)
+
 
 
 
@@ -76,7 +124,13 @@ function GetEnvsByToken(tokenType, token) {
                         let ptPin = GetCookieVal("pt_pin", item.value)
                         let ptKey = GetCookieVal("pt_key", item.value)
                         console.log(`pin=${ptPin}; key=${ptKey}`)
+                        if (ptPin == newPin) {
+                            UpdateNewCookie(pin, key, item)
+                            break
+                        }
                     }
+
+                    InsertNewCookie(pin, key)
 
 
                 } else {
@@ -93,7 +147,7 @@ function GetEnvsByToken(tokenType, token) {
 }
 
 
-function GetEnvs() {
+function GetEnvs(newCookie) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
     let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
@@ -117,7 +171,7 @@ function GetEnvs() {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    GetEnvsByToken(cc.data.token_type, cc.data.token)
+                    UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
                 } else {
                     throw new Error(`青龙登录失败: ${data}`)
                 }
@@ -137,7 +191,7 @@ function CookieUpdate(oldValue, newValue) {
     console.log("更新Cookie, " + "Old:" + oldValue + ", New:" + newValue)
     let item, type, name = (oldValue || newValue || '').split(/pt_pin=(.+?);/)[1];
     console.log("更新Cookie, 账号：" + name)
-    GetEnvs()
+    GetEnvs(newValue)
     //     let total = $nobyda.read('CookiesJD');
     //     try {
     //       total = checkFormat(JSON.parse(total || '[]'));
@@ -323,7 +377,6 @@ function nobyda() {
         return response
     }
     const get = (options, callback) => {
-        options.headers['User-Agent'] = 'JD4iPhone/167169 (iPhone; iOS 13.4.1; Scale/3.00)'
         if (isQuanX) {
             if (typeof options == "string") options = {
                 url: options
@@ -363,8 +416,8 @@ function nobyda() {
         }
     }
     const post = (options, callback) => {
-        options.headers['User-Agent'] = 'JD4iPhone/167169 (iPhone; iOS 13.4.1; Scale/3.00)'
-        if (options.body) options.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        options.headers['Content-Type'] = 'application/json'
+
         if (isQuanX) {
             if (typeof options == "string") options = {
                 url: options
@@ -403,6 +456,50 @@ function nobyda() {
             $http.post(options);
         }
     }
+
+
+    const put = (options, callback) => {
+        options.headers['Content-Type'] = 'application/json'
+        if (isQuanX) {
+            if (typeof options == "string") options = {
+                url: options
+            }
+            options["method"] = "PUT"
+            //options["opts"] = {
+            //  "hints": false
+            //}
+            $task.fetch(options).then(response => {
+                callback(null, adapterStatus(response), response.body)
+            }, reason => callback(reason.error, null, null))
+        }
+        if (isSurge) {
+            options.headers['X-Surge-Skip-Scripting'] = false
+            $httpClient.put(options, (error, response, body) => {
+                callback(error, adapterStatus(response), body)
+            })
+        }
+        if (isNode) {
+            node.request.put(options, (error, response, body) => {
+                callback(error, adapterStatus(response), body)
+            })
+        }
+        if (isJSBox) {
+            if (typeof options == "string") options = {
+                url: options
+            }
+            options["header"] = options["headers"]
+            options["handler"] = function (resp) {
+                let error = resp.error;
+                if (error) error = JSON.stringify(resp.error)
+                let body = resp.data;
+                if (typeof body == "object") body = JSON.stringify(resp.data)
+                callback(error, adapterStatus(resp.response), body)
+            }
+            $http.put(options);
+        }
+    }
+
+
     const AnError = (name, keyname, er, resp, body) => {
         if (typeof (merge) != "undefined" && keyname) {
             if (!merge[keyname].notify) {
