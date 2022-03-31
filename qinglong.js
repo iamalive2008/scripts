@@ -2,7 +2,7 @@
 
 
 (async function ReadCookie() {
-    console.log("脚本执行成功")
+    console.log("ReadCookie 脚本执行成功")
     $nobyda.notify("青龙京东Cookie", "脚本执行成功") 
     // GetCookie()
 })().catch(e => {
