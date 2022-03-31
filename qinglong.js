@@ -19,6 +19,20 @@ function Dump(name, object) {
 }
 
 
+function getCookie(name) {
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+function GetCookieVal(key, cookies) {
+
+    cookies = cookies.replace(/\s/g, '')
+
+    const value = `;${cookies}`;
+    const parts = value.split(`;${key}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return ""
+}
+
 function GetEnvsByToken(tokenType, token) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
@@ -37,7 +51,7 @@ function GetEnvsByToken(tokenType, token) {
     $nobyda.get(envsUrl, async function (error, response, data) {
         Dump("error", error)
         Dump("response", response)
-        Dump("data", data)
+        // Dump("data", data)
 
         try {
             if (error) {
@@ -53,7 +67,17 @@ function GetEnvsByToken(tokenType, token) {
                         }
                     }
 
-                    Dump("cookieEnvs", cookieEnvs)
+                   //  Dump("cookieEnvs", cookieEnvs)
+
+
+
+                    for (let item of cookieEnvs) {
+                        let ck = item.value
+                        let ptPin = GetCookieVal("pt_pin", item.value)
+                        let ptKey = GetCookieVal("pt_key", item.value)
+                        console.log(`pin=${ptPin}; key=${ptKey}`)
+                    }
+
 
                 } else {
                     throw new Error(`青龙登录失败: ${data}`)
