@@ -1,3 +1,4 @@
+const { text } = require("stream/consumers");
 
 $(function () {
     console.log("AHHelper JS Started!")
@@ -10,13 +11,24 @@ $(function () {
 
 
     function worker() {
-        console.log("workder")
-        notice(new Date().toLocaleString())
+         notice(new Date().toLocaleString())
+         hideModalIfNeeded()
     }
 
 
+    // 关闭弹窗
+    function hideModalIfNeeded() {
+        $(".modal-wrapper:visible").each(function () {
+            text = $(this).text()
+            if (text.includes("接种须知")) {
+                $(this).hide()
+                notice("关闭接种须知弹窗")
+            }
+        });
+    }
+
     // 显示消息
     function notice(msg) {
-        $(".ahh-wrapper").html(msg); 
+        $(".ahh-wrapper").html(msg);
     }
 });
