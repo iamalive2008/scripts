@@ -71,7 +71,7 @@ $(function () {
 
         notice("查找可预约接种时间")
         $(".time-block").each(function () {
-            if ($(this).text.includes("可约") && !success) {
+            if ($(this).text().includes("可约") && !success) {
                 $(this).click()
                 success = true
                 setTimeout(() => {
