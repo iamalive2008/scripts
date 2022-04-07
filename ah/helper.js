@@ -9,17 +9,18 @@ $(function () {
 
 
     function worker() {
-        closeModalIfNeeded() || finalStep()
+        closeModalIfNeeded() ||
+            selectDate() ||
+            finalStep()
     }
 
 
-    // 关闭弹窗
+    // 关闭接种弹窗
     function closeModalIfNeeded() {
 
         if ($(".modal-wrapper:visible").length == 0) {
             return false
         }
-
 
         $(".modal-wrapper:visible").each(function () {
             text = $(this).text()
@@ -38,6 +39,53 @@ $(function () {
         return true
     }
 
+
+    // 选择接种时间
+    function selectDate() {
+
+        if (selectTime()) {
+            return true
+        }
+
+
+        notice("查找可预约接种日期")
+        days = $(".vtm-calendar-count").length
+
+        if (days == 0) {
+            notice("无可用接种日期")
+            return false
+        }
+
+        $(".vtm-calendar-count").first().click()
+        return true
+    }
+
+
+
+      // 选择接种时间
+      function selectTime() {
+
+        success = false
+
+        notice("查找可预约接种时间")
+        $(".time-block").each(function () {
+            if ($(this).text.includes("可约") && !success) {
+                $(this).click()
+                success = true
+                setTimeout(() => {
+                    $("time-picker-confirm-btn").click()
+                }, 1000);
+            }
+        })
+
+        return success
+    }
+
+
+    
+
+
+    // 兜底步骤
     function finalStep() {
         notice(new Date().toLocaleString())
         return true
