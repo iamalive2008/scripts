@@ -1,5 +1,3 @@
-const { text } = require("stream/consumers");
-
 $(function () {
     console.log("AHHelper JS Started!")
 
@@ -29,6 +27,7 @@ $(function () {
 
     // 显示消息
     function notice(msg) {
+        console.log(msg)
         $(".ahh-wrapper").html(msg);
     }
 });
