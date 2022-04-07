@@ -10,7 +10,7 @@ gulp.task('scripts', function() {
             './helper.js'
         ]
       )
-    .pipe(concat('helper.js'))
+    .pipe(concat('scripts.js'))
     .pipe(minify())
     .pipe(gulp.dest('./dist/'));
 });
