@@ -75,7 +75,7 @@ $(function () {
                 $(this).click()
                 success = true
                 setTimeout(() => {
-                    $("time-picker-confirm-btn").click()
+                    $(".time-picker-confirm-btn").click()
                 }, 1000);
             }
         })
