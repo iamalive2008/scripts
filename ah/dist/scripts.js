@@ -12,14 +12,19 @@ $(function () {
 
     function worker() {
         closeModalIfNeeded() ||
-            selectDate() ||
+            selectDateAndTime() ||
+            inputUserInfo() ||
             finalStep()
     }
 
 
     // 关闭接种弹窗
+    // restart
+    // false: 继续执行
+    // true: 重新执行
     function closeModalIfNeeded() {
 
+        // 无弹窗
         if ($(".modal-wrapper:visible").length == 0) {
             return false
         }
@@ -43,38 +48,48 @@ $(function () {
 
 
     // 选择接种时间
-    function selectDate() {
-
-        if (selectTime()) {
-            return true
+    function selectDateAndTime() {
+        // 已选择日期时间
+        if ($(".show-selected-time").length > 0) {
+            return false
         }
 
+        // 选择时间
+        if (selectTime()) {
+            // 选择时间成功，重新执行
+            return true
+        }
+        return selectDate()
+    }
 
+
+    // 选择接种日期
+    function selectDate() {
         notice("查找可预约接种日期")
         days = $(".vtm-calendar-count").length
 
         if (days == 0) {
             notice("无可用接种日期")
-            return false
+            // 重新请求 等待可用日期
+            return true
         }
 
+        // 选择日期，重新运行
         $(".vtm-calendar-count").first().click()
         return true
     }
-
-
-
-      // 选择接种时间
-      function selectTime() {
-
+    
+    // 选择接种时间
+    function selectTime() {
         success = false
-
         notice("查找可预约接种时间")
         $(".time-block").each(function () {
             if ($(this).text().includes("可约") && !success) {
                 $(this).click()
                 success = true
+                notice("查找可预约接种时间成功")
                 setTimeout(() => {
+                    notice("可预约接种时间确认")
                     $(".time-picker-confirm-btn").click()
                 }, 1000);
             }
@@ -84,8 +99,24 @@ $(function () {
     }
 
 
-    
+    function inputUserInfo() {
 
+        if ($(".vaccine-info .info-add-input").length == 0) {
+            notice("无可填写接种人信息")
+            return true
+        }
+
+        $(".vaccine-info .info-add-input").each(function() {
+            label = $(this).text()
+            if (label.includes("姓名")) {
+                $(this).find("input").first().val("文轩")
+            } else if (label.includes("电话")) {
+                $(this).find("input").first().val("13000000000")
+            }
+        })
+
+        return false
+    }
 
     // 兜底步骤
     function finalStep() {
