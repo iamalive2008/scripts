@@ -1,5 +1,5 @@
 
-(function () {
+$(function () {
     console.log("AHHelper JS Started!")
     setInterval(function () {
         worker()
