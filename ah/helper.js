@@ -19,7 +19,7 @@ $(function () {
         $(".modal-wrapper:visible").each(function () {
             text = $(this).text()
             if (text.includes("接种须知")) {
-                $(this).hide()
+                // $(this).hide()
                 notice("关闭接种须知弹窗")
             }
         });
