@@ -32,7 +32,7 @@ $(function () {
             if (text.includes("接种须知")) {
                 // $(this).hide()
                 $(this).find(".modal-btn-content").each(function () {
-                    btnText = $(this).text()
+                    var btnText = $(this).text()
                     if (btnText.includes("知晓并同意")) {
                         notice("关闭接种须知弹窗")
                         $(this).click()
