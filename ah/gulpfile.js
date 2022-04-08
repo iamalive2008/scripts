@@ -6,8 +6,7 @@ const gulp = require('gulp');
 gulp.task('scripts', function() {
   return gulp.src(
         [
-            './lib/react.development.js',
-            './lib/react-dom.development.js',
+           
             './lib/jquery.js',
             './helper.js',
         ]
