@@ -39377,7 +39377,7 @@ $(function () {
         }
 
         $(".modal-wrapper:visible").each(function () {
-            text = $(this).text()
+            var text = $(this).text()
             if (text.includes("接种须知")) {
                 // $(this).hide()
                 $(this).find(".modal-btn-content").each(function () {
@@ -39413,7 +39413,7 @@ $(function () {
     // 选择接种日期
     function selectDate() {
         notice("查找可预约接种日期")
-        days = $(".vtm-calendar-count").length
+        var days = $(".vtm-calendar-count").length
 
         if (days == 0) {
             notice("无可用接种日期")
@@ -39428,7 +39428,7 @@ $(function () {
     
     // 选择接种时间
     function selectTime() {
-        success = false
+        var success = false
         notice("查找可预约接种时间")
         $(".time-block").each(function () {
             if ($(this).text().includes("可约") && !success) {
@@ -39454,7 +39454,7 @@ $(function () {
         }
 
         $(".vaccine-info .info-add-input").each(function() {
-            label = $(this).text()
+            var label = $(this).text()
             if (label.includes("姓名")) {
                 $(this).find("input").first().val("文轩")
             } else if (label.includes("电话")) {
