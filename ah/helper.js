@@ -97,8 +97,8 @@ $(function () {
     }
 
 
+    // 填写用户信息
     function inputUserInfo() {
-
         if ($(".vaccine-info .info-add-input").length == 0) {
             notice("无可填写接种人信息")
             return true
