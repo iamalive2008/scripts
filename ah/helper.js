@@ -11,8 +11,8 @@ $(function () {
     function worker() {
         closeModalIfNeeded() ||
             selectDateAndTime() ||
-            inputUserInfo() ||
-            finalStep()
+            inputUserInfo() 
+            // || finalStep()
     }
 
 
