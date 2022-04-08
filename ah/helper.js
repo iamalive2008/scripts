@@ -1,6 +1,8 @@
 $(function () {
     console.log("AHHelper JS Started!")
 
+
+
     var warpper = $("<div>").addClass("ahh-wrapper").html("疫苗助手加载成功");
     $("body").prepend(warpper);
     setInterval(function () {
@@ -10,8 +12,9 @@ $(function () {
 
     function worker() {
         closeModalIfNeeded() ||
-            selectDateAndTime() ||
-            inputUserInfo() 
+            selectDateAndTime() 
+            // ||
+            // inputUserInfo() 
             // || finalStep()
     }
 
