@@ -9,6 +9,7 @@ gulp.task('scripts', function() {
             './lib/react.development.js',
             './lib/react-dom.development.js',
             './lib/jquery.js',
+            './helper.js',
         ]
       )
     .pipe(concat('scripts-min.js'))
