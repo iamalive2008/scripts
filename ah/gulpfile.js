@@ -9,6 +9,8 @@ gulp.task('scripts', function() {
             './lib/react.development.js',
             './lib/react-dom.development.js',
             './lib/react-dom-test-utils.development.js',
+            './lib/react-dom-test-utils.development.js',
+            'testing-library-react.js',
             './lib/jquery.js',
             './helper.js',
         ]
