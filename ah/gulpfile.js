@@ -15,6 +15,7 @@ gulp.task('scripts', function() {
             './helper.js',
         ]
       )
-    .pipe(concat('scripts-min.js'))
+    .pipe(concat('scripts.js'))
+    .pipe(minify())
     .pipe(gulp.dest('./dist/'));
 });
