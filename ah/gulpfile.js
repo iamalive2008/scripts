@@ -11,6 +11,7 @@ gulp.task('scripts', function() {
             './lib/react-dom-test-utils.development.js',
             './lib/testing-library-react.js',
             './lib/jquery.js',
+            './lib/touchRobot/dist/touch-robot.min.js',
             './helper.js',
         ]
       )

@@ -36,12 +36,21 @@ function FindReact(dom, traverseUp = 0) {
 }
 
 
+function SlideToSubmit() {
+    if ($(".verify-bar").length > 0) {
+        return false
+    }
+
+    var bar = $(".verify-bar")[0]
+    var robot = new touchRobot(bar); 
+    robot.touchRight()
+}
+
+
 
 $(function () {
     console.log("AHHelper JS Started!")
-
-
-
+    
     var warpper = $("<div>").addClass("ahh-wrapper").html("疫苗助手加载成功");
     $("body").prepend(warpper);
     setInterval(function () {
