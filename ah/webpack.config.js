@@ -7,5 +7,9 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'umd',
     filename: 'scripts-min.js'
-  }
+  },
+  externals: {
+    "jquery": "jQuery",
+    "react": "React",
+  } 
 };
