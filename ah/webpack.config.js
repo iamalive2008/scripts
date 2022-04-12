@@ -8,8 +8,15 @@ module.exports = {
     libraryTarget: 'umd',
     filename: 'scripts-min.js'
   },
-  externals: {
-    "jquery": "jQuery",
-    "react": "React",
-  } 
+  module : {
+    rules: [
+      {
+        test: require.resolve("jquery"),
+        loader: "expose-loader",
+        options: {
+          exposes: ["$", "jQuery"],
+        },
+      },
+    ]
+  }
 };

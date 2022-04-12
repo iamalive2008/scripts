@@ -1,6 +1,6 @@
 // import 'react';
 // import 'react-dom';
 // import '@testing-library/react'
-// import 'jquery';
+import 'jquery';
 import './helper'
 import './touch'
