@@ -1,6 +1,3 @@
-
-
-
 (function (win, doc) {
 	"use strict";
     // 手势库

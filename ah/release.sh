@@ -1,6 +1,6 @@
 #!sh
 set -e
-gulp scripts
+npm run-script build
 git add .
 git commit -m "WIP"
 git push

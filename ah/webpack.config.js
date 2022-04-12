@@ -1,9 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: './lib/index.js',
+  mode: 'development',
+  entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'touch-robot.min.js'
+    filename: 'scripts-min.js'
   }
 };
