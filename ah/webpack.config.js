@@ -17,6 +17,13 @@ module.exports = {
           exposes: ["$", "jQuery"],
         },
       },
+      {
+        test: require.resolve("react"),
+        loader: "expose-loader",
+        options: {
+          exposes: ["React"],
+        },
+      },
     ]
   }
 };
