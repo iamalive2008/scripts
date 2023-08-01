@@ -32,22 +32,45 @@ var $nobyda = nobyda();
     Dump("token", token);
 
     // 3. 获取Env
-    const envs = await {
+    const cookieEnvs = await {
         then(resolve, reject) {
             GetEnvs(token.token_type, token.token, resolve);
         }
     };
 
-    if (!envs) {
+    if (!cookieEnvs) {
         throw new Error("获取青龙环境变量失败"); 
     }
-    Dump("envs", envs);
+    Dump("cookieEnvs", cookieEnvs);
 
 
     // 4. 更新/新增Env
+    let newPin = GetCookieVal("pt_pin", newCookie)
+    let newKey = GetCookieVal("pt_key", newCookie)
 
-    // CookieUpdate(cookies)
+    var cookieFound
+    for (let item of cookieEnvs) {
+        let ptPin = GetCookieVal("pt_pin", item.value)
+        let ptKey = GetCookieVal("pt_key", item.value)
+        console.log(`pin=${ptPin}; key=${ptKey}`)
+        if (ptPin == newPin) {
+            await {
+                then(resolve, reject) {
+                    UpdateNewCookie(token.token_type, token.token, newPin, newKey, item, resolve)
+                }
+            }
+            cookieFound = true
+            break
+        }
+    }
 
+    if (!cookieFound) {
+        await {
+            then(resolve, reject) {
+                InsertNewCookie(token.token_type, token.token, newPin, newKey, resolve)
+            }
+        }
+    }
 })().catch(e => {
     $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
 }).finally(() => {
@@ -72,7 +95,7 @@ function GetCookieVal(key, cookies) {
 
 
 
-function UpdateNewCookie(tokenType, token, pin, key, item) {
+function UpdateNewCookie(tokenType, token, pin, key, item, resolve) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
 
@@ -113,7 +136,7 @@ function UpdateNewCookie(tokenType, token, pin, key, item) {
 }
 
 
-function InsertNewCookie(tokenType, token, pin, key) {
+function InsertNewCookie(tokenType, token, pin, key, resolve) {
 
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
@@ -221,9 +244,7 @@ function UpsertEnvsByToken(tokenType, token, newCookie) {
         Dump("error", error)
         Dump("response", response)
         // Dump("data", data)
-        let newPin = GetCookieVal("pt_pin", newCookie)
-        let newKey = GetCookieVal("pt_key", newCookie)
-
+      
         try {
             if (error) {
                 throw new Error(error)
@@ -243,18 +264,7 @@ function UpsertEnvsByToken(tokenType, token, newCookie) {
 
 
 
-                    for (let item of cookieEnvs) {
-                        let ck = item.value
-                        let ptPin = GetCookieVal("pt_pin", item.value)
-                        let ptKey = GetCookieVal("pt_key", item.value)
-                        console.log(`pin=${ptPin}; key=${ptKey}`)
-                        if (ptPin == newPin) {
-                            UpdateNewCookie(tokenType, token,newPin, newKey, item)
-                            break
-                        }
-                    }
-
-                    InsertNewCookie(tokenType, token, newPin, newKey)
+            
 
 
                 } else {
