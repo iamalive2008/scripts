@@ -5,22 +5,36 @@ var ScriptName = "青龙京东Cookie"
 var $nobyda = nobyda();
 
 
-try {
-    console.log("ReadCookie 脚本执行成功")
-    async function f1() {
-       await GetEnvs("111") 
+(async function Run() {
+
+    // 1. 获取Cookie
+    console.log("GetCookie 开始");
+    const cookies = GetCookie();
+    console.log(`GetCookie 获取Cookies ${cookies}`);
+
+    // 2. 获取Token
+   const token = await {
+        then(resolve, reject) {
+            GetQingLongToken(resolve);
+        }
+    };
+
+    if (!token) {
+        throw new Error("获取青龙Token失败"); 
     }
-    f1()
-    console.log("ReadCookie 脚本执行结束")
-}catch (e) {
-    // code to handle exceptions
-    console.log("ReadCookie 脚本执行异常")
+    Dump("token", token);
+
+    // 3. 获取Env
+
+    // 4. 更新/新增Env
+
+    // CookieUpdate(cookies)
+
+})().catch(e => {
     $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
-} finally {
-    // code to execute whether exceptions occur or not
-    console.log("ReadCookie 脚本执行完成")
+}).finally(() => {
     $nobyda.done()
-}
+})
 
 
 function Dump(name, object) {
@@ -194,7 +208,8 @@ function UpsertEnvsByToken(tokenType, token, newCookie) {
 }
 
 
-function GetEnvs(newCookie) {
+
+function GetQingLongToken(resolve) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
     let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
@@ -208,29 +223,51 @@ function GetEnvs(newCookie) {
         }
     };
 
-    // const myRequest = {
-    //     url: `${serverAddr}/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
-    // };
-    
-    // $task.fetch(myRequest).then(response => {
-    //     // response.statusCode, response.headers, response.body
-    //     console.log(response.body);
-    //     $notify("Title", "Subtitle", response.body); // Success!
-    //     // $done();
-    // }, reason => {
-    //     // reason.error
-    //     $notify("Title", "Subtitle", reason.error); // Error!
-    //     // $done();
-    // });
+    $nobyda.get(tokenUrl, async function (error, response, data) {
+        Dump("error", error)
+        Dump("response", response)
+        Dump("data", data)
 
-    // // $task.fetch(tokenUrl).then(response => {
-    // //     Dump("response", response)
-    // //     // callback(null, adapterStatus(response), response.body)
-    // // }, reason => {
-    // //     Dump("reason", reason)
-    // //     // callback(reason.error, null, null)
-    // // })
-    // return
+        var token 
+
+        try {
+            if (error) {
+                throw new Error(error)
+            } else {
+                const cc = JSON.parse(data)
+                if (cc.code == 200) {
+                    // UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
+                    // resolve()
+                    token = cc.data
+                } else {
+                    throw new Error(`青龙登录失败: ${data}`)
+                }
+            }
+        }
+        catch (eor) {
+            $nobyda.AnError("青龙", "Token", eor, response, data)
+        } finally {
+            resolve(token)
+        }
+    })
+}
+
+
+
+
+function GetEnvs(resolve) {
+
+    let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
+    let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
+    let clientSecret = $nobyda.read("iamalive2008_qinglong_client_secret")
+
+    console.log(`Read prefs serverAddr=${serverAddr} clientId=${clientId} clientSecret=${clientSecret}`)
+
+    let tokenUrl = {
+        url: `${serverAddr}/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
+        headers: {
+        }
+    };
 
     $nobyda.get(tokenUrl, async function (error, response, data) {
         Dump("error", error)
@@ -264,37 +301,6 @@ function CookieUpdate(oldValue, newValue) {
     let item, type, name = (oldValue || newValue || '').split(/pt_pin=(.+?);/)[1];
     console.log("更新Cookie, 账号：" + name)
     GetEnvs(newValue)
-    //     let total = $nobyda.read('CookiesJD');
-    //     try {
-    //       total = checkFormat(JSON.parse(total || '[]'));
-    //     } catch (e) {
-    //       $nobyda.notify("京东签到", "", "Cookie JSON格式不正确, 即将清空\n可前往日志查看该数据内容!");
-    //       console.log(`京东签到Cookie JSON格式异常: ${e.message||e}\n旧数据内容: ${total}`);
-    //       total = [];
-    //     }
-    //     for (let i = 0; i < total.length; i++) {
-    //       if (total[i].cookie && new RegExp(`pt_pin=${name};`).test(total[i].cookie)) {
-    //         item = i;
-    //         break;
-    //       }
-    //     }
-    //     if (newValue && item !== undefined) {
-    //       type = total[item][path] === newValue ? -1 : 2;
-    //       total[item][path] = newValue;
-    //       item = item + 1;
-    //     } else if (newValue && path === 'cookie') {
-    //       total.push({
-    //         cookie: newValue
-    //       });
-    //       type = 1;
-    //       item = total.length;
-    //     }
-    //     return {
-    //       total: checkFormat(total),
-    //       type, //-1: same, 1: add, 2:update
-    //       item,
-    //       name: decodeURIComponent(name)
-    //     };
 }
 
 function GetCookie() {
@@ -305,9 +311,9 @@ function GetCookie() {
         if (/^https:\/\/(me-|)api(\.m|)\.jd\.com\/(client\.|user_new)/.test(req.url)) {
             if (ckItems && ckItems.length == 2) {
                 // $nobyda.notify(ScriptName, "",  ckItems.join('')) 
-
-                CookieUpdate(null, ckItems.join(''))
-
+                
+                return ckItems.join('')
+ 
                 // const value = CookieUpdate(null, ckItems.join(''))
                 // if (value.type !== -1) {
                 //     const write = $nobyda.write(JSON.stringify(value.total, null, 2), "CookiesJD")
