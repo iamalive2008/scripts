@@ -159,14 +159,16 @@ function InsertCookie(tokenType, token, pin, key, resolve) {
     $nobyda.post(envsUrl, async function (error, response, data) {
         Dump("error", error)
         Dump("response", response)
+        Dump("data", data)
 
         try {
             if (error) {
                 throw new Error(error)
             } else {
                 const cc = JSON.parse(data)
+                console.log(cc)
                 if (cc.code == 200) {
-                    $nobyda.notify("青龙京东 Cookie", "新增 Cookie", `【账户${cc.data.id}】${pin} 创建成功!`);
+                    $nobyda.notify("青龙京东 Cookie", "新增 Cookie", `【账户${cc.data[0].id}】${pin} 创建成功!`);
                 }
             }
         } catch (eor) {
