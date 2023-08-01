@@ -10,12 +10,14 @@ var $nobyda = nobyda();
     // 1. 获取Cookie
     console.log("GetCookie 开始");
     const cookies = GetCookie();
-    console.log(`GetCookie 获取Cookies ${cookies}`);
 
 
     if (!cookies) {
-        throw new Error("获取Cookie失败"); 
+        console.log(`Cookies 获取失败`);
+        return    
     }
+    console.log(`GetCookie 获取Cookies ${cookies}`);
+
 
     // 2. 获取Token
    const token = await {
@@ -326,17 +328,7 @@ function GetCookie() {
         const ckItems = CV.match(/(pt_key|pt_pin)=.+?;/g);
         if (/^https:\/\/(me-|)api(\.m|)\.jd\.com\/(client\.|user_new)/.test(req.url)) {
             if (ckItems && ckItems.length == 2) {
-                // $nobyda.notify(ScriptName, "",  ckItems.join('')) 
-                
                 return ckItems.join('')
- 
-                // const value = CookieUpdate(null, ckItems.join(''))
-                // if (value.type !== -1) {
-                //     const write = $nobyda.write(JSON.stringify(value.total, null, 2), "CookiesJD")
-                //     $nobyda.notify(`用户名: ${value.name}`, ``, `${value.type == 2 ? `更新` : `写入`}京东 [账号${value.item}] Cookie${write ? `成功 🎉` : `失败 ‼️`}`)
-                // } else {
-                //     console.log(`\n用户名: ${value.name}\n与历史京东 [账号${value.item}] Cookie相同, 跳过写入 ⚠️`)
-                // }
             } else {
                 throw new Error("写入Cookie失败, 关键值缺失\n可能原因: 非网页获取 ‼️");
             }
