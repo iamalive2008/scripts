@@ -1,13 +1,9 @@
-var LogDetails = true; //是否开启响应日志, true则开启
-
 var ScriptName = "青龙京东Cookie"
 
 var $nobyda = nobyda();
 
 
 (async function Run() {
-
-    $nobyda.notify("青龙京东 Cookie", "SubTitle", `任务开锁`);
 
     // 1. 获取Cookie
     console.log("GetCookie 开始");
