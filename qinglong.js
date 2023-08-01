@@ -14,20 +14,20 @@ var $nobyda = nobyda();
 
     if (!cookies) {
         console.log(`Cookies 获取失败`);
-        return    
+        return
     }
     console.log(`GetCookie 获取Cookies ${cookies}`);
 
 
     // 2. 获取Token
-   const token = await {
+    const token = await {
         then(resolve, reject) {
             GetQingLongToken(resolve);
         }
     };
 
     if (!token) {
-        throw new Error("获取青龙Token失败"); 
+        throw new Error("获取青龙Token失败");
     }
     Dump("token", token);
 
@@ -39,7 +39,7 @@ var $nobyda = nobyda();
     };
 
     if (!cookieEnvs) {
-        throw new Error("获取青龙环境变量失败"); 
+        throw new Error("获取青龙环境变量失败");
     }
     Dump("cookieEnvs", cookieEnvs);
 
@@ -48,12 +48,16 @@ var $nobyda = nobyda();
     let newPin = GetCookieVal("pt_pin", cookies)
     let newKey = GetCookieVal("pt_key", cookies)
 
+    console.log(`newpin=${newPin}; newKey=${newKey}`)
+
+
     var cookieFound
     for (let item of cookieEnvs) {
         let ptPin = GetCookieVal("pt_pin", item.value)
         let ptKey = GetCookieVal("pt_key", item.value)
         console.log(`pin=${ptPin}; key=${ptKey}`)
         if (ptPin == newPin) {
+            console.log("存在相同pt")
             await {
                 then(resolve, reject) {
                     UpdateCookie(token.token_type, token.token, newPin, newKey, item, resolve)
@@ -65,6 +69,7 @@ var $nobyda = nobyda();
     }
 
     if (!cookieFound) {
+        console.log("不存在相同pt")
         await {
             then(resolve, reject) {
                 InsertCookie(token.token_type, token.token, newPin, newKey, resolve)
@@ -123,7 +128,7 @@ function UpdateCookie(tokenType, token, pin, key, item, resolve) {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    $nobyda.notify("青龙京东 Cookie", "更新 Cookie", `【账户${item.id}】${pin} 更新成功!`); 
+                    $nobyda.notify("青龙京东 Cookie", "更新 Cookie", `【账户${item.id}】${pin} 更新成功!`);
                 }
             }
         } catch (eor) {
@@ -137,20 +142,18 @@ function UpdateCookie(tokenType, token, pin, key, item, resolve) {
 
 
 function InsertCookie(tokenType, token, pin, key, resolve) {
-
+    console.log("InsertCookie")
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
         headers: {
             "Authorization": `${tokenType} ${token} `
         },
-        body: [
-            {
-                "value": `pt_key=${key}; pt_pin=${pin}`,
-                "name": "JD_COOKIE",
-                "remarks": ""
-            }
-        ]
+        body: {
+            "value": `pt_key=${key}; pt_pin=${pin}`,
+            "name": "JD_COOKIE",
+            "remarks": ""
+        }
     };
 
     $nobyda.post(envsUrl, async function (error, response, data) {
@@ -163,7 +166,7 @@ function InsertCookie(tokenType, token, pin, key, resolve) {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    $nobyda.notify("青龙京东 Cookie", "新增 Cookie", `【账户${cc.data.id}】${pin} 创建成功!`); 
+                    $nobyda.notify("青龙京东 Cookie", "新增 Cookie", `【账户${cc.data.id}】${pin} 创建成功!`);
                 }
             }
         } catch (eor) {
@@ -194,7 +197,7 @@ function GetEnvs(tokenType, token, resolve) {
     $nobyda.get(envsUrl, async function (error, response, data) {
         Dump("error", error)
         Dump("response", response)
-      
+
         var cookieEnvs
         try {
             if (error) {
@@ -218,7 +221,7 @@ function GetEnvs(tokenType, token, resolve) {
         } finally {
             resolve(cookieEnvs)
         }
-    }) 
+    })
 }
 
 function GetQingLongToken(resolve) {
@@ -240,7 +243,7 @@ function GetQingLongToken(resolve) {
         Dump("response", response)
         Dump("data", data)
 
-        var token 
+        var token
 
         try {
             if (error) {
