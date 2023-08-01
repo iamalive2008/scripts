@@ -7,7 +7,8 @@ var $nobyda = nobyda();
 
 (async function ReadCookie() {
     console.log("ReadCookie 脚本执行成功")
-    GetCookie()
+    GetEnvs("111")
+    console.log("ReadCookie 脚本执行结束")
 })().catch(e => {
     console.log("ReadCookie 脚本执行异常")
     $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
@@ -209,11 +210,11 @@ function GetEnvs(newCookie) {
         // response.statusCode, response.headers, response.body
         console.log(response.body);
         $notify("Title", "Subtitle", response.body); // Success!
-        $done();
+        // $done();
     }, reason => {
         // reason.error
         $notify("Title", "Subtitle", reason.error); // Error!
-        $done();
+        // $done();
     });
 
     // $task.fetch(tokenUrl).then(response => {
