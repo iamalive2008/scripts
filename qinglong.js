@@ -199,13 +199,28 @@ function GetEnvs(newCookie) {
         }
     };
 
-    $task.fetch(tokenUrl).then(response => {
-        Dump("response", response)
-        // callback(null, adapterStatus(response), response.body)
+    const myRequest = {
+        url: `${serverAddr}/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
+    };
+    
+    $task.fetch(myRequest).then(response => {
+        // response.statusCode, response.headers, response.body
+        console.log(response.body);
+        $notify("Title", "Subtitle", response.body); // Success!
+        $done();
     }, reason => {
-        Dump("reason", reason)
-        // callback(reason.error, null, null)
-    })
+        // reason.error
+        $notify("Title", "Subtitle", reason.error); // Error!
+        $done();
+    });
+
+    // $task.fetch(tokenUrl).then(response => {
+    //     Dump("response", response)
+    //     // callback(null, adapterStatus(response), response.body)
+    // }, reason => {
+    //     Dump("reason", reason)
+    //     // callback(reason.error, null, null)
+    // })
     return
 
     $nobyda.get(tokenUrl, async function (error, response, data) {
