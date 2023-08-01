@@ -5,17 +5,20 @@ var ScriptName = "青龙京东Cookie"
 var $nobyda = nobyda();
 
 
-(function ReadCookie() {
+try {
     console.log("ReadCookie 脚本执行成功")
     GetEnvs("111")
     console.log("ReadCookie 脚本执行结束")
-})().catch(e => {
+}catch (e) {
+    // code to handle exceptions
     console.log("ReadCookie 脚本执行异常")
     $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
-}).finally(() => {
+} finally {
+    // code to execute whether exceptions occur or not
     console.log("ReadCookie 脚本执行完成")
     $nobyda.done()
-})
+}
+
 
 function Dump(name, object) {
     console.log(name + ": " + JSON.stringify(object) || object)
