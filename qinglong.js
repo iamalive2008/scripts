@@ -5,17 +5,19 @@ var ScriptName = "青龙京东Cookie"
 var $nobyda = nobyda();
 
 
-(async function ReadCookie() {
-    console.log("ReadCookie 脚本执行成功")
-    GetEnvs("111")
-    console.log("ReadCookie 脚本执行结束")
-})().catch(e => {
-    console.log("ReadCookie 脚本执行异常")
-    $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
-}).finally(() => {
-    console.log("ReadCookie 脚本执行完成")
-    $nobyda.done()
-})
+// (async function ReadCookie() {
+//     console.log("ReadCookie 脚本执行成功")
+//     GetEnvs("111")
+//     console.log("ReadCookie 脚本执行结束")
+// })().catch(e => {
+//     console.log("ReadCookie 脚本执行异常")
+//     $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
+// }).finally(() => {
+//     console.log("ReadCookie 脚本执行完成")
+//     $nobyda.done()
+// })
+
+GetEnvs("111");
 
 function Dump(name, object) {
     console.log(name + ": " + JSON.stringify(object) || object)
