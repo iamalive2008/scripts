@@ -198,8 +198,7 @@ function GetEnvs(newCookie) {
         headers: {
         }
     };
-    $nobyda.get(tokenUrl, function (error, response, data) {
-        console.log("tokenUrl done")
+    $nobyda.get(tokenUrl, async function (error, response, data) {
         Dump("error", error)
         Dump("response", response)
         Dump("data", data)
@@ -424,9 +423,15 @@ function nobyda() {
             //options["opts"] = {
             //  "hints": false
             //}
+            Dump("options", options)
+
             $task.fetch(options).then(response => {
+                Dump("response", response)
                 callback(null, adapterStatus(response), response.body)
-            }, reason => callback(reason.error, null, null))
+            }, reason => {
+                Dump("reason", reason)
+                callback(reason.error, null, null)
+            })
         }
         if (isSurge) {
             options.headers['X-Surge-Skip-Scripting'] = false
