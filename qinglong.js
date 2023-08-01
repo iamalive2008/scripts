@@ -25,6 +25,17 @@ var $nobyda = nobyda();
     Dump("token", token);
 
     // 3. 获取Env
+    const envs = await {
+        then(resolve, reject) {
+            GetEnvs(token.token_type, token.token, resolve);
+        }
+    };
+
+    if (!envs) {
+        throw new Error("获取青龙环境变量失败"); 
+    }
+    Dump("envs", envs);
+
 
     // 4. 更新/新增Env
 
@@ -139,6 +150,51 @@ function InsertNewCookie(tokenType, token, pin, key) {
 
 }
 
+
+function GetEnvs(tokenType, token, resolve) {
+    let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
+    let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
+    let clientSecret = $nobyda.read("iamalive2008_qinglong_client_secret")
+
+    console.log(`Read prefs serverAddr=${serverAddr} clientId=${clientId} clientSecret=${clientSecret}`)
+
+    let envsUrl = {
+        url: `${serverAddr}/open/envs`,
+        headers: {
+            "Authorization": `${tokenType} ${token} `
+        }
+    };
+
+    $nobyda.get(envsUrl, async function (error, response, data) {
+        Dump("error", error)
+        Dump("response", response)
+      
+        var cookieEnvs
+        try {
+            if (error) {
+                throw new Error(error)
+            } else {
+                const cc = JSON.parse(data)
+                if (cc.code == 200) {
+                    cookieEnvs = []
+                    for (let item of cc.data) {
+                        if (item.name == "JD_COOKIE") {
+                            cookieEnvs.push(item)
+                        }
+                    }
+                } else {
+                    throw new Error(`青龙登录失败: ${data}`)
+                }
+            }
+        }
+        catch (eor) {
+            $nobyda.AnError("青龙", "失败", eor, response, data)
+        } finally {
+            resolve(cookieEnvs)
+        }
+    }) 
+}
+
 function UpsertEnvsByToken(tokenType, token, newCookie) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
@@ -236,8 +292,7 @@ function GetQingLongToken(resolve) {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    // UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
-                    // resolve()
+                    UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
                     token = cc.data
                 } else {
                     throw new Error(`青龙登录失败: ${data}`)
