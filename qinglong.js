@@ -143,6 +143,10 @@ function UpdateCookie(tokenType, token, pin, key, item, resolve) {
 
 function InsertCookie(tokenType, token, pin, key, resolve) {
     console.log("InsertCookie")
+
+    resolve()
+    return
+
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
@@ -152,7 +156,7 @@ function InsertCookie(tokenType, token, pin, key, resolve) {
         body: {
             "value": `pt_key=${key}; pt_pin=${pin}`,
             "name": "JD_COOKIE",
-            "remarks": ""
+            "remarks": "Updated By qinglong.js"
         }
     };
 
