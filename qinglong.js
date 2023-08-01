@@ -138,11 +138,7 @@ function UpdateCookie(tokenType, token, pin, key, item, resolve) {
 
 function InsertCookie(tokenType, token, pin, key, resolve) {
 
-
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
-    let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
-    let clientSecret = $nobyda.read("iamalive2008_qinglong_client_secret")
-
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
         headers: {
@@ -509,6 +505,9 @@ function nobyda() {
                 url: options
             }
             options["method"] = "PUT"
+            if (typeof options["body"] != "string") {
+                options["body"] = JSON.stringify(options["body"])
+            }
             //options["opts"] = {
             //  "hints": false
             //}
