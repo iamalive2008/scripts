@@ -106,7 +106,7 @@ function UpdateCookie(tokenType, token, pin, key, item, resolve) {
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
         headers: {
-            "Authorization": `${tokenType} ${token} `
+            "Authorization": `${tokenType} ${token}`
         },
         body: {
             "id": item.id,
@@ -147,13 +147,13 @@ function InsertCookie(tokenType, token, pin, key, resolve) {
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
         headers: {
-            "Authorization": `${tokenType} ${token} `
+            "Authorization": `${tokenType} ${token}`
         },
-        body: {
+        body: [{
             "value": `pt_key=${key}; pt_pin=${pin}`,
             "name": "JD_COOKIE",
-            "remarks": "Updated By qinglong.js"
-        }
+            "remarks": "Created By qinglong.js"
+        }]
     };
 
     $nobyda.post(envsUrl, async function (error, response, data) {
@@ -190,7 +190,7 @@ function GetEnvs(tokenType, token, resolve) {
     let envsUrl = {
         url: `${serverAddr}/open/envs`,
         headers: {
-            "Authorization": `${tokenType} ${token} `
+            "Authorization": `${tokenType} ${token}`
         }
     };
 
