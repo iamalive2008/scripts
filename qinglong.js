@@ -469,6 +469,9 @@ function nobyda() {
             //options["opts"] = {
             //  "hints": false
             //}
+            if (typeof options["body"] != "string") {
+                options["body"] = JSON.stringify(options["body"])
+            }
             Dump("更新请求 options  POST", options)
             $task.fetch(options).then(response => {
                 callback(null, adapterStatus(response), response.body)
