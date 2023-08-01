@@ -198,7 +198,8 @@ function GetEnvs(newCookie) {
         headers: {
         }
     };
-    $nobyda.get(tokenUrl, async function (error, response, data) {
+    $nobyda.get(tokenUrl, function (error, response, data) {
+        console.log("tokenUrl done")
         Dump("error", error)
         Dump("response", response)
         Dump("data", data)
