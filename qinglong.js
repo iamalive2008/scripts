@@ -121,12 +121,14 @@ function UpdateCookie(tokenType, token, pin, key, item, resolve) {
     $nobyda.put(envsUrl, async function (error, response, data) {
         Dump("error", error)
         Dump("response", response)
+        Dump("data", data)
 
         try {
             if (error) {
                 throw new Error(error)
             } else {
                 const cc = JSON.parse(data)
+                console.log(`请求成功: ${cc}`)
                 if (cc.code == 200) {
                     $nobyda.notify("青龙京东 Cookie", "更新 Cookie", `【账户${item.id}】${pin} 更新成功!`);
                 }
