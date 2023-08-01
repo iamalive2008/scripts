@@ -45,8 +45,8 @@ var $nobyda = nobyda();
 
 
     // 4. 更新/新增Env
-    let newPin = GetCookieVal("pt_pin", newCookie)
-    let newKey = GetCookieVal("pt_key", newCookie)
+    let newPin = GetCookieVal("pt_pin", cookies)
+    let newKey = GetCookieVal("pt_key", cookies)
 
     var cookieFound
     for (let item of cookieEnvs) {
@@ -56,7 +56,7 @@ var $nobyda = nobyda();
         if (ptPin == newPin) {
             await {
                 then(resolve, reject) {
-                    UpdateNewCookie(token.token_type, token.token, newPin, newKey, item, resolve)
+                    UpdateCookie(token.token_type, token.token, newPin, newKey, item, resolve)
                 }
             }
             cookieFound = true
@@ -67,7 +67,7 @@ var $nobyda = nobyda();
     if (!cookieFound) {
         await {
             then(resolve, reject) {
-                InsertNewCookie(token.token_type, token.token, newPin, newKey, resolve)
+                InsertCookie(token.token_type, token.token, newPin, newKey, resolve)
             }
         }
     }
@@ -95,7 +95,7 @@ function GetCookieVal(key, cookies) {
 
 
 
-function UpdateNewCookie(tokenType, token, pin, key, item, resolve) {
+function UpdateCookie(tokenType, token, pin, key, item, resolve) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
 
@@ -136,7 +136,7 @@ function UpdateNewCookie(tokenType, token, pin, key, item, resolve) {
 }
 
 
-function InsertNewCookie(tokenType, token, pin, key, resolve) {
+function InsertCookie(tokenType, token, pin, key, resolve) {
 
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
@@ -225,63 +225,6 @@ function GetEnvs(tokenType, token, resolve) {
     }) 
 }
 
-function UpsertEnvsByToken(tokenType, token, newCookie) {
-
-    let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
-    let clientId = $nobyda.read("iamalive2008_qinglong_client_id")
-    let clientSecret = $nobyda.read("iamalive2008_qinglong_client_secret")
-
-    console.log(`Read prefs serverAddr=${serverAddr} clientId=${clientId} clientSecret=${clientSecret}`)
-
-    let envsUrl = {
-        url: `${serverAddr}/open/envs`,
-        headers: {
-            "Authorization": `${tokenType} ${token} `
-        }
-    };
-
-    $nobyda.get(envsUrl, async function (error, response, data) {
-        Dump("error", error)
-        Dump("response", response)
-        // Dump("data", data)
-      
-        try {
-            if (error) {
-                throw new Error(error)
-            } else {
-                const cc = JSON.parse(data)
-                if (cc.code == 200) {
-                    var cookieEnvs = []
-
-                    for (let item of cc.data) {
-                        if (item.name == "JD_COOKIE") {
-                            cookieEnvs.push(item)
-                        }
-                    }
-
-                    //  Dump("cookieEnvs", cookieEnvs)
-
-
-
-
-            
-
-
-                } else {
-                    throw new Error(`青龙登录失败: ${data}`)
-                }
-            }
-        }
-        catch (eor) {
-            $nobyda.AnError("青龙", "Token", eor, response, data)
-        } finally {
-            resolve()
-        }
-    })
-}
-
-
-
 function GetQingLongToken(resolve) {
 
     let serverAddr = $nobyda.read("iamalive2008_qinglong_server_addr")
@@ -309,7 +252,6 @@ function GetQingLongToken(resolve) {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    // UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
                     token = cc.data
                 } else {
                     throw new Error(`青龙登录失败: ${data}`)
