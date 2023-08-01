@@ -198,6 +198,16 @@ function GetEnvs(newCookie) {
         headers: {
         }
     };
+
+    $task.fetch(tokenUrl).then(response => {
+        Dump("response", response)
+        // callback(null, adapterStatus(response), response.body)
+    }, reason => {
+        Dump("reason", reason)
+        // callback(reason.error, null, null)
+    })
+    return
+
     $nobyda.get(tokenUrl, async function (error, response, data) {
         Dump("error", error)
         Dump("response", response)
