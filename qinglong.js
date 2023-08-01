@@ -9,8 +9,10 @@ var $nobyda = nobyda();
     console.log("ReadCookie 脚本执行成功")
     GetCookie()
 })().catch(e => {
+    console.log("ReadCookie 脚本执行异常")
     $nobyda.notify(ScriptName, "", e.message || JSON.stringify(e))
 }).finally(() => {
+    console.log("ReadCookie 脚本执行完成")
     $nobyda.done()
 })
 
