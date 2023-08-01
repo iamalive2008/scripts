@@ -505,12 +505,13 @@ function nobyda() {
                 url: options
             }
             options["method"] = "PUT"
-            if (typeof options["body"] != "string") {
-                options["body"] = JSON.stringify(options["body"])
-            }
+            // if (typeof options["body"] != "string") {
+            //     options["body"] = JSON.stringify(options["body"])
+            // }
             //options["opts"] = {
             //  "hints": false
             //}
+            Dump("更新请求 options ", options)
             $task.fetch(options).then(response => {
                 callback(null, adapterStatus(response), response.body)
             }, reason => callback(reason.error, null, null))
