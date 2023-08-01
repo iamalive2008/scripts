@@ -415,7 +415,7 @@ function nobyda() {
             if (typeof options == "string") options = {
                 url: options
             }
-            options["method"] = "GET"
+            options.method = "GET"
             //options["opts"] = {
             //  "hints": false
             //}
@@ -504,7 +504,7 @@ function nobyda() {
             if (typeof options == "string") options = {
                 url: options
             }
-            options["method"] = "PUT"
+            options.method = "PUT"
             // if (typeof options["body"] != "string") {
             //     options["body"] = JSON.stringify(options["body"])
             // }
