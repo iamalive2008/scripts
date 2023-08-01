@@ -7,6 +7,8 @@ var $nobyda = nobyda();
 
 (async function Run() {
 
+    $nobyda.notify("青龙京东 Cookie", "SubTitle", `任务开锁`);
+
     // 1. 获取Cookie
     console.log("GetCookie 开始");
     const cookies = GetCookie();
