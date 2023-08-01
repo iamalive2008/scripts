@@ -12,6 +12,11 @@ var $nobyda = nobyda();
     const cookies = GetCookie();
     console.log(`GetCookie 获取Cookies ${cookies}`);
 
+
+    if (!cookies) {
+        throw new Error("获取Cookie失败"); 
+    }
+
     // 2. 获取Token
    const token = await {
         then(resolve, reject) {
@@ -292,7 +297,7 @@ function GetQingLongToken(resolve) {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
+                    // UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
                     token = cc.data
                 } else {
                     throw new Error(`青龙登录失败: ${data}`)
