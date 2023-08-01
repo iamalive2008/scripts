@@ -7,7 +7,10 @@ var $nobyda = nobyda();
 
 try {
     console.log("ReadCookie 脚本执行成功")
-    GetEnvs("111")
+    async function f1() {
+       await GetEnvs("111") 
+    }
+    f1()
     console.log("ReadCookie 脚本执行结束")
 }catch (e) {
     // code to handle exceptions
@@ -205,29 +208,29 @@ function GetEnvs(newCookie) {
         }
     };
 
-    const myRequest = {
-        url: `${serverAddr}/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
-    };
+    // const myRequest = {
+    //     url: `${serverAddr}/open/auth/token?client_id=${clientId}&client_secret=${clientSecret}`,
+    // };
     
-    $task.fetch(myRequest).then(response => {
-        // response.statusCode, response.headers, response.body
-        console.log(response.body);
-        $notify("Title", "Subtitle", response.body); // Success!
-        // $done();
-    }, reason => {
-        // reason.error
-        $notify("Title", "Subtitle", reason.error); // Error!
-        // $done();
-    });
-
-    // $task.fetch(tokenUrl).then(response => {
-    //     Dump("response", response)
-    //     // callback(null, adapterStatus(response), response.body)
+    // $task.fetch(myRequest).then(response => {
+    //     // response.statusCode, response.headers, response.body
+    //     console.log(response.body);
+    //     $notify("Title", "Subtitle", response.body); // Success!
+    //     // $done();
     // }, reason => {
-    //     Dump("reason", reason)
-    //     // callback(reason.error, null, null)
-    // })
-    return
+    //     // reason.error
+    //     $notify("Title", "Subtitle", reason.error); // Error!
+    //     // $done();
+    // });
+
+    // // $task.fetch(tokenUrl).then(response => {
+    // //     Dump("response", response)
+    // //     // callback(null, adapterStatus(response), response.body)
+    // // }, reason => {
+    // //     Dump("reason", reason)
+    // //     // callback(reason.error, null, null)
+    // // })
+    // return
 
     $nobyda.get(tokenUrl, async function (error, response, data) {
         Dump("error", error)
@@ -240,7 +243,7 @@ function GetEnvs(newCookie) {
             } else {
                 const cc = JSON.parse(data)
                 if (cc.code == 200) {
-                    UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
+                    // UpsertEnvsByToken(cc.data.token_type, cc.data.token, newCookie)
                 } else {
                     throw new Error(`青龙登录失败: ${data}`)
                 }
