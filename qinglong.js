@@ -513,9 +513,9 @@ function nobyda() {
                 url: options
             }
             options.method = "PUT"
-            // if (typeof options["body"] != "string") {
-            //     options["body"] = JSON.stringify(options["body"])
-            // }
+            if (typeof options["body"] != "string") {
+                options["body"] = JSON.stringify(options["body"])
+            }
             //options["opts"] = {
             //  "hints": false
             //}
