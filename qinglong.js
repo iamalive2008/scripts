@@ -110,7 +110,7 @@ function UpdateCookie(tokenType, token, pin, key, item, resolve) {
         },
         body: {
             "id": item.id,
-            "value": `pt_key=${key}; pt_pin=${pin}`,
+            "value": `pt_key=${key};pt_pin=${pin};`,
             "name": "JD_COOKIE",
             "remarks": "Updated By qinglong.js"
         }
@@ -150,7 +150,7 @@ function InsertCookie(tokenType, token, pin, key, resolve) {
             "Authorization": `${tokenType} ${token}`
         },
         body: [{
-            "value": `pt_key=${key}; pt_pin=${pin}`,
+            "value": `pt_key=${key};pt_pin=${pin};`,
             "name": "JD_COOKIE",
             "remarks": "Created By qinglong.js"
         }]
