@@ -54,16 +54,16 @@ var $nobyda = nobyda();
         let ptPin = GetCookieVal("pt_pin", item.value)
         let ptKey = GetCookieVal("pt_key", item.value)
         console.log(`pin=${ptPin}; key=${ptKey}`)
-        // if (ptPin == newPin) {
-        //     console.log("存在相同pt")
-        //     await {
-        //         then(resolve, reject) {
-        //             UpdateCookie(token.token_type, token.token, newPin, newKey, item, resolve)
-        //         }
-        //     }
-        //     cookieFound = true
-        //     break
-        // }
+        if (ptPin == newPin) {
+            console.log("存在相同pt")
+            await {
+                then(resolve, reject) {
+                    UpdateCookie(token.token_type, token.token, newPin, newKey, item, resolve)
+                }
+            }
+            cookieFound = true
+            break
+        }
     }
 
     if (!cookieFound) {
@@ -149,11 +149,11 @@ function InsertCookie(tokenType, token, pin, key, resolve) {
         headers: {
             "Authorization": `${tokenType} ${token}`
         },
-        body: {
+        body: [{
             "value": `pt_key=${key};pt_pin=${pin};`,
-            "name": "JD_COOKIE_TEST",
+            "name": "JD_COOKIE",
             "remarks": "Created By qinglong.js"
-        }
+        }]
     };
 
     $nobyda.post(envsUrl, async function (error, response, data) {
@@ -480,6 +480,10 @@ function nobyda() {
             }, reason => callback(reason.error, null, null))
         }
         if (isSurge) {
+            options.headers['X-Surge-Skip-Scripting'] = false
+            if (typeof options["body"] != "string") {
+                options["body"] = JSON.stringify(options["body"])
+            }
             Dump("更新请求 options  POST", options)
             $httpClient.post(options, (error, response, body) => {
                 callback(error, adapterStatus(response), body)
