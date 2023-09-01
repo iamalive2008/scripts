@@ -480,7 +480,7 @@ function nobyda() {
             }, reason => callback(reason.error, null, null))
         }
         if (isSurge) {
-            options.headers['X-Surge-Skip-Scripting'] = false
+            Dump("更新请求 options  POST", options)
             $httpClient.post(options, (error, response, body) => {
                 callback(error, adapterStatus(response), body)
             })
