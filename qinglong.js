@@ -149,11 +149,11 @@ function InsertCookie(tokenType, token, pin, key, resolve) {
         headers: {
             "Authorization": `${tokenType} ${token}`
         },
-        body: [{
+        body: {
             "value": `pt_key=${key};pt_pin=${pin};`,
             "name": "JD_COOKIE_TEST",
             "remarks": "Created By qinglong.js"
-        }]
+        }
     };
 
     $nobyda.post(envsUrl, async function (error, response, data) {
