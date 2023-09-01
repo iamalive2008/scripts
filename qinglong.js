@@ -54,16 +54,16 @@ var $nobyda = nobyda();
         let ptPin = GetCookieVal("pt_pin", item.value)
         let ptKey = GetCookieVal("pt_key", item.value)
         console.log(`pin=${ptPin}; key=${ptKey}`)
-        if (ptPin == newPin) {
-            console.log("存在相同pt")
-            await {
-                then(resolve, reject) {
-                    UpdateCookie(token.token_type, token.token, newPin, newKey, item, resolve)
-                }
-            }
-            cookieFound = true
-            break
-        }
+        // if (ptPin == newPin) {
+        //     console.log("存在相同pt")
+        //     await {
+        //         then(resolve, reject) {
+        //             UpdateCookie(token.token_type, token.token, newPin, newKey, item, resolve)
+        //         }
+        //     }
+        //     cookieFound = true
+        //     break
+        // }
     }
 
     if (!cookieFound) {
